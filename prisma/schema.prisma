@@ -15,6 +15,7 @@ datasource db {
 model Position {
     id          String      @id @default(cuid())
     ticker      String
+    name        String
     platform    String
     quantity    Int
     createdAt   DateTime    @default(now())
