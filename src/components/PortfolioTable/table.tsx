@@ -7,8 +7,9 @@ import { useEffect, useState } from "react"
 import { Checkbox } from "../ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
-import { MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import EditPosition from "../EditPosition"
+import { toast } from "../ui/use-toast"
 
 type ConverionRateAPIResponse = {
   data: {
@@ -27,7 +28,7 @@ export default function PortfolioTable() {
   })
 
   const [conversionRate, setConversionRate] = useState<Record<string, string>>()
-
+  const [totalValue, setTotalValue] = useState<number>(0)
 
   useEffect(() => {
     async function fetchConversionRate() {
@@ -35,10 +36,13 @@ export default function PortfolioTable() {
         .then((res) => res.json())
         .then((data: ConverionRateAPIResponse) => {
           setConversionRate(data.data.rates);
+          console.log(data.data.rates)
         });
     }
     void fetchConversionRate()
   }, [])
+
+
 
 
   const columns: ColumnDef<Position>[] = [
@@ -53,6 +57,13 @@ export default function PortfolioTable() {
     {
       accessorKey: "quantity",
       header: "Quantity",
+      cell: ({ row }) => {
+        return (
+          <div className="text-center">
+            {row.original.quantity}
+          </div>
+        )
+      }
     },
     {
       accessorKey: "platform",
@@ -60,23 +71,33 @@ export default function PortfolioTable() {
     },
     {
       accessorKey: "amount",
-      header: () => <div className="text-right">Amount</div>,
-      cell: ({ row }) => {
-      const currentRate = conversionRate?.[row.original.ticker] ?? 1
-      const amount = parseFloat(row.getValue("quantity")) * (1 / (currentRate as number))
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
- 
-      return <div className="text-right font-medium">{formatted}</div>
+      header: () => {
+        return(
+          <div 
+            className="text-right"
+          >
+            Amount
+          </div>
+        )
+        
       },
+      cell: ({ row }) => {
+        const currentRate = conversionRate?.[row.original.ticker] ?? 1;
+        const amount =
+          parseFloat(row.getValue("quantity")) * (1 / (currentRate as number));
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+
+        return <div className="text-end font-medium">{formatted}</div>;
+      },
+
     },
     {
       id: "actions",
       cell: ({ row }) => {
-        const position = row.original
-   
+        const position = row.original; 
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -85,31 +106,36 @@ export default function PortfolioTable() {
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuContent align="start" className="space-y-2">
+              <DropdownMenuItem asChild>
+                <EditPosition position={position} />
+              </DropdownMenuItem>
+
               <DropdownMenuItem
-                className="bg-red-200 text-red-800 hover:bg-red-300"
-                onClick={() => deletePosition({ id: position.id })}
+                className="bg-red-500 text-white hover:bg-red-100"
+                onClick={() => {
+                  deletePosition({ id: position.id });
+                  toast({
+                    variant: "destructive",
+                    title: "Position deleted",
+                    description: "Your position has been deleted",
+                  });
+                }}
               >
                 Delete
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem asChild className="">
-                <EditPosition position={position} />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
     },
-  ]
+  ];
   if (!positions) {
     return null
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto pb-7">
       <DataTable columns={columns} data={positions} />
     </div>
   )

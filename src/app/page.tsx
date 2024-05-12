@@ -59,16 +59,11 @@ export default function Dashboard() {
       <Card id = "" className = "col-span-2">
         <CardHeader>
           <CardTitle>Portfolio</CardTitle>
-          <CardDescription>Current value of your holdings</CardDescription>
+          <CardDescription>Table of your current holdings</CardDescription>
         </CardHeader>
         <PortfolioTable />
       </Card>
 
-    <Card>
-      <CardHeader>
-        <CryptocurrencySelect />
-      </CardHeader>
-    </Card>
     
 
 

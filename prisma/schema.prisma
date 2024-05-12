@@ -17,7 +17,7 @@ model Position {
     ticker      String
     name        String
     platform    String
-    quantity    Int
+    quantity    Float
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
 }
