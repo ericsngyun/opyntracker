@@ -66,7 +66,7 @@ export default function Dashboard() {
       <main className="grid grid-cols-4 gap-4 py-4">
         <Card
           id="total-value"
-          className="col-span-2 flex-col place-items-center justify-between p-4 md:flex"
+          className="col-span-2 place-items-center justify-between p-4 md:flex"
         >
           <div>
             <h1 className="text-xl font-semibold md:text-2xl">Total Value</h1>
@@ -81,7 +81,7 @@ export default function Dashboard() {
         </Card>
         <Card
           id="highest-value"
-          className="col-span-2 flex-col place-items-center justify-between p-4 md:flex"
+          className="col-span-2  place-items-center justify-between p-4 md:flex"
         >
           <div>
             <h1 className="text-xl font-semibold md:text-2xl">Highest Value</h1>
