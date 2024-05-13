@@ -71,7 +71,7 @@ yarn start
 
 - The navbar on the side and top(for mobile) is mostly for show, the buttons don't serve any purpose except to show what the app would look like with all of its features implemented
 - There is no authentication for this app, since it is mostly for demo use and usable by developers
-
+- The data used for the DeFi Asset names and the Platform names are mock data and not data fetched from an API
 ## Badges
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)

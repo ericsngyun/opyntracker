@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { Home, LineChart, Settings } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
 
 export default async function NavSide() {
