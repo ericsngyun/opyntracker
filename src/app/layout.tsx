@@ -6,6 +6,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import NavBar from "~/components/NavBar";
 import { Toaster } from "~/components/ui/toaster";
+import { ThemeProvider } from "~/components/ThemeProvider";
 
 export const metadata = {
   title: "Create T3 App",
@@ -23,12 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-      <Toaster />
-      <TooltipProvider>
-        <NavBar>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </NavBar>
-      </TooltipProvider>
+        <ThemeProvider
+        defaultTheme="dark"
+        enableSystem={true}
+        >
+          <Toaster />
+          <TooltipProvider>
+            {/* <NavBar> */}
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            {/* </NavBar> */}
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

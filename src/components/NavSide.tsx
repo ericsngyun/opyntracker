@@ -4,6 +4,7 @@ import { Home, LineChart, Settings } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { ModeToggle } from "./ModeToggle";
 
 export default async function NavSide() {
 
@@ -32,7 +33,7 @@ export default async function NavSide() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/charts"
+                href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <LineChart className="h-5 w-5" />
@@ -43,7 +44,7 @@ export default async function NavSide() {
           </Tooltip>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
@@ -67,8 +68,8 @@ export default async function NavSide() {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
-
+          </DropdownMenu> */}
+          <ModeToggle />
           <Tooltip>
             <TooltipTrigger asChild>
               <Link

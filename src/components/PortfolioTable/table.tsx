@@ -7,48 +7,38 @@ import { useEffect, useState } from "react"
 import { Checkbox } from "../ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import {  MoreHorizontal } from "lucide-react"
 import EditPosition from "../EditPosition"
 import { toast } from "../ui/use-toast"
+import { ConversionRateAPIResponse } from "~/app/page"
 
-type ConverionRateAPIResponse = {
-  data: {
-    currency: string
-    rates: Record<string, string>
-  }
+type PortfolioTableProps = {
+  positions: Position[] | undefined
+  conversionRates: Record<string, string> | undefined
 }
 
-export default function PortfolioTable() {
+export default function PortfolioTable({positions, conversionRates}:PortfolioTableProps) {
   const utils = api.useUtils()
-  const {data: positions} = api.positions.getAll.useQuery()
+ 
   const {mutate: deletePosition} = api.positions.delete.useMutation({
     async onSuccess() {
       await utils.positions.getAll.invalidate()
     },
   })
 
-  const [conversionRate, setConversionRate] = useState<Record<string, string>>()
-  const [totalValue, setTotalValue] = useState<number>(0)
-
-  useEffect(() => {
-    async function fetchConversionRate() {
-      await fetch("https://api.coinbase.com/v2/exchange-rates")
-        .then((res) => res.json())
-        .then((data: ConverionRateAPIResponse) => {
-          setConversionRate(data.data.rates);
-          console.log(data.data.rates)
-        });
-    }
-    void fetchConversionRate()
-  }, [])
-
-
-
-
   const columns: ColumnDef<Position>[] = [
+
     {
       accessorKey: "ticker",
       header: "Ticker",
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            
+            <span>{row.original.ticker}</span>
+          </div>
+        )
+      }
     },
     {
       accessorKey: "name",
@@ -82,7 +72,7 @@ export default function PortfolioTable() {
         
       },
       cell: ({ row }) => {
-        const currentRate = conversionRate?.[row.original.ticker] ?? 1;
+        const currentRate = conversionRates?.[row.original.ticker] ?? 1;
         const amount =
           parseFloat(row.getValue("quantity")) * (1 / (currentRate as number));
         const formatted = new Intl.NumberFormat("en-US", {

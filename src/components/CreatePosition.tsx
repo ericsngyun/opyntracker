@@ -1,11 +1,10 @@
 "use client";
  
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, ChevronsUpDown, Link } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
  
-import { cn } from "~/lib/utils"
 import { Button } from "~/components/ui/button"
 
 import {
@@ -25,9 +24,6 @@ import {
   SheetTrigger,
 } from "~/components/ui/sheet"
 
-import { type Position } from "@prisma/client";
-
-
 import { api } from "~/trpc/react";
 import React from "react";
 import { Input } from "./ui/input";
@@ -44,29 +40,23 @@ import { Platforms } from "~/lib/data";
 import Image from "next/image";
 import { toast } from "./ui/use-toast";
 
-type EditPositionProps = {
-  position: Position
-}
 
 
 
 const FormSchema = z.object({
-  id: z.string(),
-  data: z.object({
     name: z.string({ required_error: "Name is required" }),
     ticker: z.string({required_error: "Ticker is required"}),
     platform: z.string({required_error: "Platform is required"}),
     quantity: z.number({required_error: "Quantity is required"}),
-  }),
 });
 
 
-export default function EditPosition({ position }: EditPositionProps) {
+export default function CreatePosition() {
   const utils = api.useUtils()
-  const {mutate: updatePosition} = api.positions.update.useMutation({
+  const {mutate: createPosition} = api.positions.create.useMutation({
     async onSuccess() {
       toast({
-        title: "Position updated",
+        title: "Position Created",
       })
       await utils.positions.getAll.invalidate()
     },
@@ -74,21 +64,14 @@ export default function EditPosition({ position }: EditPositionProps) {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      id: position.id,
-      data: {
-        name: position.name,
-        ticker: position.ticker,
-        platform: position.platform,
-        quantity: position.quantity,
-      },
-    },
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-      updatePosition({
-        id: data.id,
-        data: data.data,
+      createPosition({
+        name: data.name,
+        ticker: data.ticker,
+        platform: data.platform,
+        quantity: data.quantity,
       })
     }
 
@@ -98,21 +81,22 @@ export default function EditPosition({ position }: EditPositionProps) {
       );
       
       if(selectedCrypto) {
-        form.setValue("data.ticker", selectedCrypto.symbol);
+        form.setValue("ticker", selectedCrypto.symbol);
       }
     };
     
   
-  
-
   return (
     <Sheet>
-      <SheetTrigger className="w-full rounded-md px-2 py-1 text-left text-sm hover:bg-slate-100">
-        Edit
+      <SheetTrigger asChild>
+        <Button className = "bottom-[40px] right-[40px] fixed h-12">
+          <h1 className = "">Add Holding</h1>
+          <Plus className="sm:h-12"/>
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit Position</SheetTitle>
+          <SheetTitle>Add Position</SheetTitle>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -123,7 +107,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                   */}
                   <FormField
                     control={form.control}
-                    name="data.name"
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Asset</FormLabel>
@@ -137,7 +121,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue />
+                              <SelectValue placeholder="Select DeFi Asset..."/>
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -177,7 +161,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                   */}
                   <FormField
                     control={form.control}
-                    name="data.platform"
+                    name="platform"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Platform</FormLabel>
@@ -189,7 +173,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue />
+                              <SelectValue placeholder="Select a platform..." />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -229,7 +213,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                   */}
                   <FormField
                     control={form.control}
-                    name="data.quantity"
+                    name="quantity"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Amount</FormLabel>
@@ -248,6 +232,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                               }
                             }}
                             value={field.value ?? ""}
+                            placeholder="0.00"
                           />
                         </FormControl>
                         <FormDescription>
@@ -259,7 +244,7 @@ export default function EditPosition({ position }: EditPositionProps) {
                   />
                 </div>
                 <div className="flex w-full justify-end">
-                  <Button type="submit">Save</Button>
+                  <Button type="submit">Add Position</Button>
                 </div>
               </div>
             </form>
