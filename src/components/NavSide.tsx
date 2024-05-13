@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Home, LineChart, Settings } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import Image from "next/image";
-import { ModeToggle } from "./ModeToggle";
+
 
 export default async function NavSide() {
 
@@ -69,7 +66,6 @@ export default async function NavSide() {
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu> */}
-          <ModeToggle />
           <Tooltip>
             <TooltipTrigger asChild>
               <Link

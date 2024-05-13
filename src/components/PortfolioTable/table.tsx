@@ -73,8 +73,7 @@ export default function PortfolioTable({positions, conversionRates}:PortfolioTab
       },
       cell: ({ row }) => {
         const currentRate = conversionRates?.[row.original.ticker] ?? 1;
-        const amount =
-          parseFloat(row.getValue("quantity")) * (1 / (currentRate as number));
+        const amount = parseFloat(row.getValue("quantity")) * (1 / (currentRate as number));
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",

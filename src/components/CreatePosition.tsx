@@ -73,6 +73,8 @@ export default function CreatePosition() {
         platform: data.platform,
         quantity: data.quantity,
       })
+      
+      form.reset();
     }
 
     function handleValueChange (selectedCryptoName: typeof Cryptocurrencies[number]["name"]){
