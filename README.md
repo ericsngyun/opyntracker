@@ -1,29 +1,79 @@
-# Create T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+# Opyn DeFi Portfolio
 
-## What's next? How do I make an app with this?
+Clean and robust DeFi Portfolio Tracker where users can manually input their DeFi asset name, amount, and platform.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This is also a submission to Opyn's takehome assessment
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Built with:
+- Next.js
+- TypeScript
+- tRPC
+- TailwindCSS
+- Shadcn UI
+- Supabase
+- Prisma
+- Recharts
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## How to use
 
-## Learn More
+This project is built with T3 stack so once you clone the repository
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+First install all the dependencies with 
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+```
+npm install
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```
+or
+```
+yarn
+```
 
-## How do I deploy this?
+Then you want to set your environment variables to connect your database in the .env file in the root directory
+```
+DATABASE_URL="YOUR_DATABASE_URL"
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+DIRECT_URL="YOUR_DATABASE_DIRECT_URL"
+```
+I used Supabase to build this project so that should work fine with this repository
+
+Then you want to run this command in your terminal in order to migrate your prisma schema from the schema.prisma file to your database
+
+```
+npx prisma db push
+```
+or
+```
+yarn db:push
+```
+
+Then to run the project in your development server you would want to run the following command in your terminal
+```
+npm run dev
+```
+or
+```
+yarn dev
+```
+
+In order to build and start the production version of the application you would need to run these commands
+```
+npm run build
+npm run start
+```
+or
+```
+yarn build
+yarn start
+```
+## Notes
+
+- The navbar on the side and top(for mobile) is mostly for show, the buttons don't serve any purpose except to show what the app would look like with all of its features implemented
+- There is no authentication for this app, since it is mostly for demo use and usable by developers
+
+## Badges
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
+
